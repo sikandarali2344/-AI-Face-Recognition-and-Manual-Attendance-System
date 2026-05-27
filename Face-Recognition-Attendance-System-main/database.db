@@ -1,0 +1,42 @@
+cat > database.py << 'EOF'
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+from datetime import datetime
+
+db = SQLAlchemy()
+
+class User(UserMixin, db.Model):
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    role = db.Column(db.String(50), default='teacher')
+    full_name = db.Column(db.String(100))
+    email = db.Column(db.String(120))
+    department = db.Column(db.String(100))
+    teacher_id = db.Column(db.String(20), unique=True)
+
+class Student(db.Model):
+    __tablename__ = 'student'
+    id = db.Column(db.Integer, primary_key=True)
+    roll_no = db.Column(db.String(20), unique=True, nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120))
+    department = db.Column(db.String(100))
+    semester = db.Column(db.Integer, default=6)
+    section = db.Column(db.String(10))
+    photo_path = db.Column(db.String(200))
+
+class Attendance(db.Model):
+    __tablename__ = 'attendance'
+    id = db.Column(db.Integer, primary_key=True)
+    roll_no = db.Column(db.String(20))
+    student_name = db.Column(db.String(100))
+    date = db.Column(db.String(20))
+    time = db.Column(db.String(20))
+    period = db.Column(db.String(50))
+    subject = db.Column(db.String(100))
+    status = db.Column(db.String(20))
+    department = db.Column(db.String(100))
+    marked_by = db.Column(db.String(80))
+EOF
